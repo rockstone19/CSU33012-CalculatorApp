@@ -1,11 +1,130 @@
 package org.example;
-
+import java.util.*;
 public class CalculatorApp {
     public static void main(String[] args)
     {
-        System.out.println("hello there!!" + isValidExpression("3+10*3"));
+        String exp = "";
+        Scanner input = new Scanner(System.in);
+        while(exp == "")
+        {
+            System.out.print("Please enter a mathematical expression using only integers, addition, subtraction, and multiplication\n>");
+            exp = input.nextLine();
+
+            int valid = isValidExpression(exp);
+
+            if(valid == 0)
+            {
+                int result = evaluateExpression(exp);
+                System.out.println(exp + " = " + result);
+            }
+
+                //Print out specific error message and reset exp
+            else
+            {
+                if (valid == 1)
+                    System.out.println("ERROR: Operator issue or empty expression. Please try again.");
+                else if (valid == 2)
+                    System.out.println("ERROR: Unknown character. Please try again.");
+                else if (valid == 3)
+                    System.out.println("ERROR: Decimal number. Please try again.");
+                else if (valid == 4)
+                    System.out.println("ERROR: Leading 0. Please try again.");
+
+                exp = "";
+            }
+        }
+
+        input.close();
     }
 
+
+    public static int evaluateExpression(String expression)
+    {
+        Stack<Integer> numStack = new Stack<Integer>();
+        Stack<Character> opStack = new Stack<Character>();
+		/*
+		Part 1:
+		-Convert strings to numbers, put on numStack
+		-Put + and - on opStack
+		-If multiplication, pop numbers and do that
+		*/
+        String currNum = "";
+        for(int i = 0; i < expression.length(); i++)
+        {
+            char c = expression.charAt(i);
+            //Get final number and push to the number stack
+            if(i == expression.length()-1)
+            {
+                currNum += c;
+                numStack.push(Integer.valueOf(currNum));
+            }
+            //If it is digit, add to current number
+            else if(isNumber(c))
+                currNum += c;
+            //If it's operator
+            else if(isOperator(c))
+            {
+                //Push current number (which has ended) to stack & reset currNum
+                numStack.push(Integer.valueOf(currNum));
+                currNum = "";
+                //If operator stack isn't empty
+                if (!opStack.isEmpty())
+                {
+                    //If multiplication is on stack, do it before adding another operator
+                    if(priority(opStack.peek()) >= priority(c))
+                    {
+                        //Get
+                        int num1 = numStack.pop();
+                        int num2 = numStack.pop();
+                        char operator = opStack.pop();
+                        numStack.push(doCalc(num1, num2, operator));
+
+                        //Push new operator on stack
+                        opStack.push(c);
+                    }
+                }
+                //If opStack empty, just push operator to stack
+                else
+                    opStack.push(c);
+            }
+        }
+		/*
+		 Part 2:
+		 Do repeated addition/subtraction until opStack is empty
+		 */
+        while(!opStack.isEmpty())
+        {
+            //Get two most recent numbers and their operator
+            int num1 = numStack.pop();
+            int num2 = numStack.pop();
+            char operator = opStack.pop();
+
+            //Do calculation and push it onto stack
+            numStack.push(doCalc(num1, num2, operator));
+        }
+
+        //Return final number on stack (the final result of equation)
+        return numStack.pop();
+    }
+
+    public static int doCalc(int num1, int num2, char operator)
+    {
+        if(operator == '*')
+            return num1 * num2;
+        else if(operator == '+')
+            return num1 +  num2;
+        else //subtraction
+            return num2 - num1;
+    }
+
+    //For getting operator priority (mult > sub = add)
+    public static int priority(char c)
+    {
+        if(c == '*')
+            return 1;
+        else
+            return 0;
+    }
 
     /*
      Returns int code based on result
