@@ -82,6 +82,8 @@ public class CalculatorApp {
                         //Push new operator on stack
                         opStack.push(c);
                     }
+                    else
+                        opStack.push(c);
                 }
                 //If opStack empty, just push operator to stack
                 else

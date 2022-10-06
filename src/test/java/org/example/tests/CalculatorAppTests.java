@@ -6,7 +6,8 @@ import org.example.CalculatorApp;
 
 public class CalculatorAppTests {
     @Test
-    public void testIsValidExpression() {
+    public void testIsValidExpression()
+    {
         String input = "";
 
         //test correct expression
@@ -46,4 +47,28 @@ public class CalculatorAppTests {
         assertEquals("Checking leading zero", 4, CalculatorApp.isValidExpression(input));
     }
 
+    @Test
+    public void testEvaluateExpression()
+    {
+        String input = "15+20";
+        assertEquals("Check basic addition", 35, CalculatorApp.evaluateExpression(input));
+
+        input = "159-23";
+        assertEquals("Check basic subtraction", 136, CalculatorApp.evaluateExpression(input));
+
+        input = "4*16";
+        assertEquals("Check basic multiplication", 64, CalculatorApp.evaluateExpression(input));
+
+        input = "2+4*16";
+        assertEquals("Check addition & multiplication", 66, CalculatorApp.evaluateExpression(input));
+
+        input = "50+4-6*14";
+        assertEquals("Check complex equation", -30, CalculatorApp.evaluateExpression(input));
+
+        input = "4*5*2+3-10*3";
+        assertEquals("Check complex equation", 13, CalculatorApp.evaluateExpression(input));
+
+        input = "3*2-4+3*2";
+        assertEquals("Check complex equation", 8, CalculatorApp.evaluateExpression(input));
+    }
 }
