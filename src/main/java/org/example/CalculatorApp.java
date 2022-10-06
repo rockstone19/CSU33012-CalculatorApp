@@ -1,39 +1,44 @@
 package org.example;
+import javax.swing.*;
 import java.util.*;
 public class CalculatorApp {
     public static void main(String[] args)
     {
         String exp = "";
         Scanner input = new Scanner(System.in);
-        while(exp == "")
+        boolean finished = false;
+        while(!finished)
         {
-            System.out.print("Please enter a mathematical expression using only integers, addition, subtraction, and multiplication\n>");
-            exp = input.nextLine();
-
+//            System.out.print("Please enter a mathematical expression using only integers, addition, subtraction, and multiplication\n>");
+//            exp = input.nextLine();
+            exp = JOptionPane.showInputDialog("Please enter a mathematical expression, " + "\n" + "using addition, subtraction or multiplication: \n");
             int valid = isValidExpression(exp);
 
             if(valid == 0)
             {
                 int result = evaluateExpression(exp);
-                System.out.println(exp + " = " + result);
+//                System.out.println(exp + " = " + result);
+                JOptionPane.showMessageDialog(null, "The result is : " + result , "Results", JOptionPane.PLAIN_MESSAGE );
             }
 
                 //Print out specific error message and reset exp
             else
             {
                 if (valid == 1)
-                    System.out.println("ERROR: Operator issue or empty expression. Please try again.");
+//                    System.out.println("ERROR: Operator issue or empty expression. Please try again.");
+                    JOptionPane.showMessageDialog(null, " Error: Operator issue or empty expression. Please try again.", "ERROR", JOptionPane.ERROR_MESSAGE );
                 else if (valid == 2)
-                    System.out.println("ERROR: Unknown character. Please try again.");
+//                    System.out.println("ERROR: Unknown character. Please try again.");
+                    JOptionPane.showMessageDialog(null, " Error: Unknown character. Please try again.", "ERROR", JOptionPane.ERROR_MESSAGE );
                 else if (valid == 3)
-                    System.out.println("ERROR: Decimal number. Please try again.");
+//                    System.out.println("ERROR: Decimal number. Please try again.");
+                    JOptionPane.showMessageDialog(null, " Error: Decimal number. Please try again.", "ERROR", JOptionPane.ERROR_MESSAGE );
                 else if (valid == 4)
-                    System.out.println("ERROR: Leading 0. Please try again.");
-
+//                    System.out.println("ERROR: Leading 0. Please try again.");
+                    JOptionPane.showMessageDialog(null, " ERROR: Leading 0. Please try again.", "ERROR", JOptionPane.ERROR_MESSAGE );
                 exp = "";
             }
         }
-
         input.close();
     }
 
