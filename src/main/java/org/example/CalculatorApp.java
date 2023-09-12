@@ -9,32 +9,23 @@ public class CalculatorApp {
         boolean finished = false;
         while(!finished)
         {
-//            System.out.print("Please enter a mathematical expression using only integers, addition, subtraction, and multiplication\n>");
-//            exp = input.nextLine();
             exp = JOptionPane.showInputDialog("Please enter a mathematical expression, " + "\n" + "using addition, subtraction or multiplication: \n");
             int valid = isValidExpression(exp);
-
             if(valid == 0)
             {
                 int result = evaluateExpression(exp);
-//                System.out.println(exp + " = " + result);
                 JOptionPane.showMessageDialog(null, "The result is : " + result , "Results", JOptionPane.PLAIN_MESSAGE );
             }
-
-                //Print out specific error message and reset exp
+            //Print out specific error message and reset exp
             else
             {
                 if (valid == 1)
-//                    System.out.println("ERROR: Operator issue or empty expression. Please try again.");
                     JOptionPane.showMessageDialog(null, " Error: Operator issue or empty expression. Please try again.", "ERROR", JOptionPane.ERROR_MESSAGE );
                 else if (valid == 2)
-//                    System.out.println("ERROR: Unknown character. Please try again.");
                     JOptionPane.showMessageDialog(null, " Error: Unknown character. Please try again.", "ERROR", JOptionPane.ERROR_MESSAGE );
                 else if (valid == 3)
-//                    System.out.println("ERROR: Decimal number. Please try again.");
                     JOptionPane.showMessageDialog(null, " Error: Decimal number. Please try again.", "ERROR", JOptionPane.ERROR_MESSAGE );
                 else if (valid == 4)
-//                    System.out.println("ERROR: Leading 0. Please try again.");
                     JOptionPane.showMessageDialog(null, " ERROR: Leading 0. Please try again.", "ERROR", JOptionPane.ERROR_MESSAGE );
                 exp = "";
             }
@@ -83,7 +74,6 @@ public class CalculatorApp {
                         int num2 = numStack.pop();
                         char operator = opStack.pop();
                         numStack.push(doCalc(num1, num2, operator));
-
                         //Push new operator on stack
                         opStack.push(c);
                     }
@@ -105,11 +95,9 @@ public class CalculatorApp {
             int num1 = numStack.pop();
             int num2 = numStack.pop();
             char operator = opStack.pop();
-
             //Do calculation and push it onto stack
             numStack.push(doCalc(num1, num2, operator));
         }
-
         //Return final number on stack (the final result of equation)
         return numStack.pop();
     }
@@ -143,7 +131,6 @@ public class CalculatorApp {
     public static int isValidExpression(String expression)
     {
         boolean canBeOperator = false;
-
         //Single character expression
         if(expression.length() == 1)
         {
@@ -198,7 +185,7 @@ public class CalculatorApp {
             //If it is a period (decimal)
             else if(currChar == '.')
                 return 3;
-                //If it isn't a valid character
+            //If it isn't a valid character
             else
                 return 2;
         }
